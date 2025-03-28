@@ -41,9 +41,11 @@ mallaFacial = mediapipeMallaFacial.FaceMesh(
 while cam.isOpened:
 
     ret, video = cam.capture_array()
+    frame = cam.capture_array()
+
     # Codigo checar para correrlo en el raspberry
-    cv2.circle(video, middle, 10, (255, 0 , 255), -1)
-    cuadroRGB = cv2.cvtColor(video, cv2.COLOR_BGR2RGB)
+    cv2.circle(frame, middle, 10, (255, 0 , 255), -1)
+    cuadroRGB = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
     resultados = mallaFacial.process(cuadroRGB)
 
@@ -56,7 +58,7 @@ while cam.isOpened:
     if resultados.multi_face_landmarks:
         for rostros in resultados.multi_face_landmarks:
             mediapipeDibujo.draw_landmarks(
-                video,
+                frame,
                 rostros,
                 mediapipeMallaFacial.FACEMESH_TESSELATION,
                 landmark_drawing_spec=None,
@@ -81,7 +83,7 @@ while cam.isOpened:
                     longitud2 = math.hypot(x4 - x3, y4 - y3)
 
                     cv2.putText(
-                        video,
+                        frame,
                         f"Parpadeos: {int(conteo)}",
                         (20, 60),
                         cv2.FONT_HERSHEY_SIMPLEX,
@@ -91,7 +93,7 @@ while cam.isOpened:
                     )
 
                     cv2.putText(
-                        video,
+                        frame,
                         f"Micro sueños: {int(conteo_sue)}",
                         (350, 60),
                         cv2.FONT_HERSHEY_SIMPLEX,
@@ -101,7 +103,7 @@ while cam.isOpened:
                     )
 
                     cv2.putText(
-                        video,
+                        frame,
                         f"Duración: {int(muestra)}",
                         (160, 100),
                         cv2.FONT_HERSHEY_SIMPLEX,
@@ -111,7 +113,7 @@ while cam.isOpened:
                     )
 
                     cv2.putText(
-                         video,
+                         frame,
                          f"longitud1: {int(longitud1)}",
                          (20, 180),
                          cv2.FONT_HERSHEY_SIMPLEX,
@@ -121,7 +123,7 @@ while cam.isOpened:
                      )
 
                     cv2.putText(
-                         video,
+                         frame,
                          f"longitud2: {int(longitud2)}",
                          (350, 180),
                          cv2.FONT_HERSHEY_SIMPLEX,
@@ -157,8 +159,8 @@ while cam.isOpened:
 
 
     
-    if (ret):
-        cv2.imshow("Roadsaver",video)
+    if (frame):
+        cv2.imshow("Roadsaver",frame)
     if cv2.waitKey(1)& 0xFF==ord("q"):
         break
 cam.release()
